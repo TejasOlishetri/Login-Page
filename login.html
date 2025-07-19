@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+</head>
+<body>
+
+  <div id="error"></div>
+  <div id="sucess"></div>
+
+  <div class="wraper">
+    <div class="formelement">
+      <h2>Login</h2>
+      <label for="Email"><span style="color:red">*</span> Email </label>
+      <input type="email" name="Email" id="Email" />
+
+      <label for="Password"><span style="color:red">*</span> Password </label>
+      <input type="password" name="password" id="password" />
+
+      <label class="password-toggle">
+        <input type="checkbox" id="togglePassword"> Show Password
+      </label>
+    </div>
+
+    <div>
+      <input id="submitbt" type="submit" value="Login" />
+      <h5>I haven't account <a href="index.html">Register</a></h5>
+    </div>
+  </div>
+
+  <script>
+    // Show/Hide Password
+    $("#togglePassword").on("click", function () {
+      const pass = $("#password");
+      const type = pass.attr("type") === "password" ? "text" : "password";
+      pass.attr("type", type);
+    });
+
+    // Email validation
+    function isEmail(email) {
+      const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      return regex.test(email);
+    }
+
+    // Password validation
+    function isPasswordValid(password) {
+      const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{8,15}$/;
+      return regex.test(password);
+    }
+
+    // Login button handler
+    $("#submitbt").click(function (e) {
+      e.preventDefault();
+
+      $("#error").html("").css("color", "red");
+      $("#success").html("");
+
+      let errormsg = "";
+      let emailInput = $("#Email").val();
+      let passwordInput = $("#password").val();
+
+      const correctEmail = "olitejas2@gmail.com";
+      const correctPassword = "Tejas@32";
+
+      // Validation
+      if (emailInput === "") {
+        errormsg += "<p>Email not filled</p>";
+      } else if (!isEmail(emailInput)) {
+        errormsg += "<p>Invalid Email format</p>";
+      }
+
+      if (passwordInput === "") {
+        errormsg += "<p>Password not filled</p>";
+      } else if (!isPasswordValid(passwordInput)) {
+        errormsg += "<p>Password must be 8-15 characters, include uppercase, lowercase, and special character</p>";
+      }
+
+      // Show validation errors
+      if (errormsg !== "") {
+        $("#error").html(errormsg);
+        return;
+      }
+
+      // Final login check
+      if (emailInput === correctEmail && passwordInput === correctPassword) {
+        $("#sucess").html("Login successful! Welcome back").css("color", "green");
+      } else {
+        $("#error").html("Incorrect email or password.");
+      }
+    });
+  </script>
+</body>
+</html>

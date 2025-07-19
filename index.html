@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Registration Form</title>
+  <link rel="stylesheet" href="style.css" />
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+</head>
+<body>
+
+  <div id="error"></div>
+  <div id="sucess"></div>
+
+  <div class="wraper">
+    <div class="formelement">
+      <h2>Registration</h2>
+      <label for="Email"><span style="color:red">*</span> Email </label>
+      <input type="email" name="Email" id="Email" />
+    </div>
+
+    <div class="formelement">
+      <label for="Phone"><span style="color:red">*</span> Phone No</label>
+      <input type="text" name="Phone" id="phone" maxlength="10"/>
+    </div>
+
+    <div class="formelement">
+      <label for="Password"><span style="color:red">*</span> Password</label>
+      <div class="password-wrapper">
+        <input type="password" id="password" />
+        <label class="password-toggle">
+          <input type="checkbox" id="togglePassword"> Show Password
+        </label>
+      </div>
+    </div>
+
+    <div class="formelement">
+      <label for="Confirm-Password"><span style="color:red">*</span> Confirm Password</label>
+      <input type="password" name="Confirm-Password" id="Confirm-Password" />
+    </div>
+
+    <input id="submitbt" type="submit" value="Register" />
+    <h5>I have account <a href="login.html">Login</a></h5>
+  </div>
+
+  <script>
+    $("#phone").on("input", function () {
+      $(this).val($(this).val().replace(/[^0-9]/g, '').slice(0, 10));
+    });
+
+    
+    $("#togglePassword").on("click", function () {
+      const pass = $("#password");
+      const type = pass.attr("type") === "password" ? "text" : "password";
+      pass.attr("type", type);
+    });
+
+    function isEmail(email) {
+      var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+      return regex.test(email);
+    }
+
+    
+    $("#submitbt").click(function (e) {
+      e.preventDefault();
+
+      $("#error").html("").css("color", "red");
+      $("#sucess").html("");
+
+      let errormsg = "";
+      let missfield = "";
+
+      if ($("#Email").val() == "") {
+        missfield += "<p>Email not filled</p>";
+      }
+
+      if ($("#phone").val() == "") {
+        missfield += "<p>Mob No. not filled</p>";
+      }
+
+      if ($("#password").val() == "") {
+        missfield += "<p>Password not filled</p>";
+      }
+
+      if (!isEmail($("#Email").val())) {
+        errormsg += "<p>Email is not valid</p>";
+      }
+
+      if (!$.isNumeric($("#phone").val()) || $("#phone").val().length != 10) {
+        errormsg += "<p>Phone Number must be 10 digits</p>";
+      }
+
+      if ($("#password").val() !== $("#Confirm-Password").val()) {
+        errormsg += "<p>Password does not match</p>";
+      }
+
+      if (errormsg === "" && missfield === "") {
+        $("#sucess").html("Your Registration has Successfully Done!").css("color", "green");
+      } else {
+        $("#error").html(errormsg + missfield);
+      }
+    });
+function isPasswordValid(password) {
+  var regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{8,15}$/;
+  return regex.test(password);
+}
+
+$("#submitbt").click(function (e) {
+  e.preventDefault();
+
+  $("#error").html("").css("color", "red");
+  $("#sucess").html("");
+
+  let errormsg = "";
+  let missfield = "";
+
+  if ($("#Email").val() == "") {
+    missfield += "<p>Email not filled</p>";
+  }
+
+  if ($("#phone").val() == "") {
+    missfield += "<p>Mob No. not filled</p>";
+  }
+
+  if ($("#password").val() == "") {
+    missfield += "<p>Password not filled</p>";
+  }
+
+  if (!isEmail($("#Email").val())) {
+    errormsg += "<p>Email is not valid</p>";
+  }
+
+  if (!$.isNumeric($("#phone").val()) || $("#phone").val().length != 10) {
+    errormsg += "<p>Phone Number must be 10 digits</p>";
+  }
+
+  if (!isPasswordValid($("#password").val())) {
+    errormsg += "<p>Password must be 8-15 characters, with at least one uppercase, one lowercase, and one special character</p>";
+  }
+
+  if ($("#password").val() !== $("#Confirm-Password").val()) {
+    errormsg += "<p>Password does not match</p>";
+  }
+
+  if (errormsg === "" && missfield === "") {
+    $("#sucess").html("Your Registration has Successfully Done!").css("color", "green");
+  } else {
+    $("#error").html(errormsg + missfield);
+  }
+});
+
+  </script>
+</body>
+</html>
